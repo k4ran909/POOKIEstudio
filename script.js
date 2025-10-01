@@ -365,6 +365,8 @@ for (let i = 0; i < frameCount; i++) {
   images.push(img);
 }
 
+images[0].onload = render;
+
 gsap.to(imageSeq, {
   frame: frameCount - 1,
   snap: "frame",
@@ -378,8 +380,6 @@ gsap.to(imageSeq, {
   },
   onUpdate: render,
 });
-
-images[1].onload = render;
 
 function render() {
   scaleImage(images[imageSeq.frame], context);
