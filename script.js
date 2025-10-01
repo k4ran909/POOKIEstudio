@@ -443,3 +443,82 @@ gsap.to("#page3",{
     scroller:`#main`
   }
 })
+
+const aboutLink = document.querySelector("#about-link");
+const aboutPage = document.querySelector("#about-page");
+const closeAbout = document.querySelector("#close-about");
+const newsLink = document.querySelector("#news-link");
+const newsPage = document.querySelector("#news-page");
+const closeNews = document.querySelector("#close-news");
+const contactLink = document.querySelector('#contact-link');
+const contactPage = document.querySelector('#contact-page');
+const closeContact = document.querySelector('#close-contact');
+
+aboutLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    gsap.to(aboutPage, {
+        left: "0%",
+        duration: 1,
+        ease: "power3.inOut"
+    });
+  // update URL without reload
+  try { history.pushState({panel: 'about'}, '', '/About'); } catch(e) {}
+});
+
+closeAbout.addEventListener("click", () => {
+    gsap.to(aboutPage, {
+        left: "100%",
+        duration: 1,
+        ease: "power3.inOut"
+    });
+  try { history.pushState({}, '', '/'); } catch(e) {}
+});
+
+// News handlers
+newsLink && newsLink.addEventListener('click', (e) => {
+  e.preventDefault();
+  gsap.to(newsPage, { left: '0%', duration: 1, ease: 'power3.inOut' });
+  try { history.pushState({panel: 'news'}, '', '/News'); } catch(e) {}
+});
+
+closeNews && closeNews.addEventListener('click', () => {
+  gsap.to(newsPage, { left: '100%', duration: 1, ease: 'power3.inOut' });
+  try { history.pushState({}, '', '/'); } catch(e) {}
+});
+
+// Handle back/forward to close/open panels based on state or pathname
+window.addEventListener('popstate', (event) => {
+  const path = location.pathname || '/';
+  if (path.toLowerCase().includes('news')) {
+    gsap.to(newsPage, { left: '0%', duration: 0.6, ease: 'power3.inOut' });
+  } else if (path.toLowerCase().includes('about')) {
+    gsap.to(aboutPage, { left: '0%', duration: 0.6, ease: 'power3.inOut' });
+  } else {
+    gsap.to(newsPage, { left: '100%', duration: 0.6, ease: 'power3.inOut' });
+    gsap.to(aboutPage, { left: '100%', duration: 0.6, ease: 'power3.inOut' });
+  }
+});
+
+// On initial load, show panel if URL is /News or /About
+document.addEventListener('DOMContentLoaded', () => {
+  const p = location.pathname || '/';
+  if (p.toLowerCase().includes('news')) {
+    gsap.to(newsPage, { left: '0%', duration: 0.6, ease: 'power3.inOut' });
+  } else if (p.toLowerCase().includes('about')) {
+    gsap.to(aboutPage, { left: '0%', duration: 0.6, ease: 'power3.inOut' });
+  } else if (p.toLowerCase().includes('contact')) {
+    gsap.to(contactPage, { left: '0%', duration: 0.6, ease: 'power3.inOut' });
+  }
+});
+
+// Contact handlers
+contactLink && contactLink.addEventListener('click', (e) => {
+  e.preventDefault();
+  gsap.to(contactPage, { left: '0%', duration: 1, ease: 'power3.inOut' });
+  try { history.pushState({panel: 'contact'}, '', '/Contact'); } catch(e) {}
+});
+
+closeContact && closeContact.addEventListener('click', () => {
+  gsap.to(contactPage, { left: '100%', duration: 1, ease: 'power3.inOut' });
+  try { history.pushState({}, '', '/'); } catch(e) {}
+});
